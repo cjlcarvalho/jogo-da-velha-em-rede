@@ -16,7 +16,6 @@ int checa_jogada_cli(char tabuleiro[], char escolha[], int* n);
 void print_tabuleiro_cli(char tabuleiro[]);
 int checa_vitoria_cli(char tabuleiro[], int jogador);
 int checa_empate_cli(char tabuleiro[]);
-int read_in_cli(int socket, char buf[], int len);
 
 int start_client(){
 
@@ -79,11 +78,11 @@ int start_client(){
     print_tabuleiro_cli(tabuleiro);
     jogada_cli(tabuleiro, 2);
 
-   	if(checa_vitoria_cli(tabuleiro, 2)){
-   		write(sockfd, "VIT", sizeof("VIT"));
-   		printf("Vitória do jogador 2\n");
-   		return 0;
-   	}
+    if(checa_vitoria_cli(tabuleiro, 2)){
+   	    write(sockfd, "VIT", sizeof("VIT"));
+   	    printf("Vitória do jogador 2\n");
+   	    return 0;
+    }
 
     write(sockfd, tabuleiro, sizeof(tabuleiro));
 
@@ -102,9 +101,9 @@ int start_client(){
     jogada_cli(tabuleiro, 2);
 
     if(checa_vitoria_cli(tabuleiro, 2)){
-   		write(sockfd, "VIT", sizeof("VIT"));
-   		printf("Vitória do jogador 2\n");
-   		return 0;
+        write(sockfd, "VIT", sizeof("VIT"));
+        printf("Vitória do jogador 2\n");
+        return 0;
    	}
 
     write(sockfd, tabuleiro, sizeof(tabuleiro));
@@ -253,23 +252,4 @@ int checa_empate_cli(char tabuleiro[]){
         i++;
     }
     return 1;
-}
-
-int read_in_cli(int socket, char buf[], int len){
-    char *s = buf;
-    int slen = len;
-    int c = recv(socket, s, slen, 0);
-    while((c>0)&&(s[c-1] != '\n')){
-        s += c;
-        slen -= c;
-        c = recv(socket, s, slen, 0);
-    }
-    if(c < 0)
-        return c;
-    else if(c == 0)
-        buf[0] = '\n';
-    else
-        s[c-1] = '\0';
-
-    return len - slen;
 }
