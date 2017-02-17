@@ -164,7 +164,7 @@ int jogada_cli(char tabuleiro[], int jogador){
 }
 
 int checa_jogada_cli(char tabuleiro[], char escolha[], int* n){
-	*n = 0;
+    *n = 0;
     if(escolha[0] - 65 == 0)
     {
         if(escolha[1] - 48 == 1){
