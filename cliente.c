@@ -27,11 +27,11 @@ int checa_empate_cli(char tabuleiro[]);
 
 int start_client(){
 
-	#ifdef __WIN32__
-		WORD versionWanted = MAKEWORD(1, 1);
-		WSADATA wsaData;
-		WSAStartup(versionWanted, &wsaData);
-	#endif
+    #ifdef __WIN32__
+        WORD versionWanted = MAKEWORD(1, 1);
+        WSADATA wsaData;
+        WSAStartup(versionWanted, &wsaData);
+    #endif
 	
     int sockfd = socket(AF_INET,SOCK_STREAM,0);
     struct sockaddr_in servaddr;
@@ -93,9 +93,9 @@ int start_client(){
     jogada_cli(tabuleiro, 2);
 
     if(checa_vitoria_cli(tabuleiro, 2)){
-   	    write(sockfd, "VIT", sizeof("VIT"));
-   	    printf("Vitória do jogador 2\n");
-   	    return 0;
+        write(sockfd, "VIT", sizeof("VIT"));
+   	printf("Vitória do jogador 2\n");
+   	return 0;
     }
 
     write(sockfd, tabuleiro, sizeof(tabuleiro));
@@ -118,7 +118,7 @@ int start_client(){
         write(sockfd, "VIT", sizeof("VIT"));
         printf("Vitória do jogador 2\n");
         return 0;
-   	}
+    }
 
     write(sockfd, tabuleiro, sizeof(tabuleiro));
 
