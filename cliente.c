@@ -1,14 +1,22 @@
 #include <stdio.h>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <string.h>
 #include <strings.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <arpa/inet.h>
 #include <unistd.h>
 #include <signal.h>
+
+#ifdef __WIN32__
+#include <io.h>
+#include <winsock2.h>
+#include <windows.h>
+#define bzero(b, len) (memset((b), '\0', (len)), (void) 0)
+#else
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#endif
 
 int start_client();
 int jogada_cli(char tabuleiro[], int jogador);
@@ -19,6 +27,12 @@ int checa_empate_cli(char tabuleiro[]);
 
 int start_client(){
 
+	#ifdef __WIN32__
+		WORD versionWanted = MAKEWORD(1, 1);
+		WSADATA wsaData;
+		WSAStartup(versionWanted, &wsaData);
+	#endif
+	
     int sockfd = socket(AF_INET,SOCK_STREAM,0);
     struct sockaddr_in servaddr;
     char buff[11];

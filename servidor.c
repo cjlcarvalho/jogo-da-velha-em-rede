@@ -1,14 +1,22 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <sys/types.h>
 #include <string.h>
+#include <strings.h>
+#include <stdlib.h>
 #include <errno.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
 #include <unistd.h>
 #include <signal.h>
-#include <sys/types.h>
+
+#ifdef __WIN32__
+#include <io.h>
+#include <winsock2.h>
+#include <windows.h>
+#define bzero(b, len) (memset((b), '\0', (len)), (void) 0)
+#else
+#include <sys/socket.h>
 #include <netinet/in.h>
-#include <strings.h>
+#include <arpa/inet.h>
+#endif
 
 int start_server();
 int open_listener_socket();
@@ -20,6 +28,13 @@ int checa_vitoria_srv(char tabuleiro[], int jogador);
 int checa_empate_srv(char tabuleiro[]);
 
 int start_server(){
+	
+	#ifdef __WIN32__
+		WORD versionWanted = MAKEWORD(1, 1);
+		WSADATA wsaData;
+		WSAStartup(versionWanted, &wsaData);
+	#endif
+	
 	char tabuleiro[11] = "          ";
 	// Vincular a uma porta e abrir conexão
 	int listener_d = open_listener_socket();
@@ -296,7 +311,8 @@ int open_listener_socket(){
 void bind_to_port(int socket, int port){
 	struct sockaddr_in name;
 	name.sin_family = PF_INET;
-	name.sin_port = (in_port_t)htons(30000);
+	//name.sin_port = (in_port_t)htons(30000);
+	name.sin_port = htons(30000);
 	name.sin_addr.s_addr = INADDR_ANY;
 	int c = bind(socket, (struct sockaddr *)&name, sizeof(name));
 }
