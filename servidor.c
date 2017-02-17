@@ -44,10 +44,8 @@ int start_server(){
 	unsigned int address_size = sizeof(client_addr);
 
 	char buff[11];
-	int finaliza;
 	char resposta[4];
-	int len;
-	int connect_d;
+	int len, finaliza, connect_d;
 	printf("Esperando o jogador 2\n");
 	listen(listener_d, 5);
 
