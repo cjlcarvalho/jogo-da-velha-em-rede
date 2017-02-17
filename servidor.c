@@ -1,3 +1,7 @@
+#ifdef __WIN32__
+#define _WIN32_WINNT 0x0501
+#endif
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <string.h>
@@ -9,7 +13,7 @@
 
 #ifdef __WIN32__
 #include <io.h>
-#include <winsock2.h>
+#include <winsock.h>
 #include <windows.h>
 #define bzero(b, len) (memset((b), '\0', (len)), (void) 0)
 #else
@@ -30,9 +34,8 @@ int checa_empate_srv(char tabuleiro[]);
 int start_server(){
 	
 	#ifdef __WIN32__
-		WORD versionWanted = MAKEWORD(1, 1);
 		WSADATA wsaData;
-		WSAStartup(versionWanted, &wsaData);
+		WSAStartup(MAKEWORD(1, 1), &wsaData);
 	#endif
 	
 	char tabuleiro[11] = "          ";
@@ -40,18 +43,31 @@ int start_server(){
 	int listener_d = open_listener_socket();
 	bind_to_port(listener_d, 30000);
 
+<<<<<<< HEAD
+	// Criando conexão
+
+	#ifdef __unix__
+=======
+>>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	struct sockaddr_storage client_addr;
 	unsigned int address_size = sizeof(client_addr);
-
+	#endif
+	
 	char buff[11];
 	char resposta[4];
 	int len, finaliza, connect_d;
 	printf("Esperando o jogador 2\n");
 	listen(listener_d, 5);
 
+<<<<<<< HEAD
+	#ifdef __WIN32__
+	connect_d = accept(listener_d, NULL, NULL);
+	#else
+=======
 	// Criando conexão
+>>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	connect_d = accept(listener_d, (struct sockaddr *)&client_addr, &address_size);
-
+	#endif
 	// Rodada 1
 	// Imprime tabuleiro
 	print_tabuleiro_srv(tabuleiro);
@@ -61,14 +77,26 @@ int start_server(){
 
 	bzero(buff, sizeof(buff));
 	strcpy(buff, tabuleiro);
+<<<<<<< HEAD
+	// Enviou jogada
+	#ifdef __WIN32__
+	send(connect_d, buff, sizeof(buff), 0);
+	#else	
+=======
 	// Envia jogada	
+>>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	write(connect_d, buff, sizeof(buff));
-
+	#endif
+	
 	bzero(buff, sizeof(buff));
 
 	// Espera jogada do jogador 2
 	printf("Esperando o jogador 2\n");
+	#ifdef __WIN32__
+	recv(connect_d, buff, sizeof(buff), 0);
+	#else
 	read(connect_d, buff, sizeof(buff));
+	#endif
 	strcpy(tabuleiro, buff);
 
 	// Rodada 2
@@ -78,14 +106,26 @@ int start_server(){
 	// Joga
 	jogada_srv(tabuleiro, 1);
 
+<<<<<<< HEAD
+	// Enviou jogada
+	#ifdef __WIN32__
+	send(connect_d, tabuleiro, sizeof(tabuleiro), 0);
+	#else	
+=======
 	// Envia jogada	
+>>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
+	#endif	
 
 	bzero(buff, sizeof(buff));
 
 	// Espera jogada do jogador 2
 	printf("Esperando o jogador 2\n");
+	#ifdef __WIN32__
+	recv(connect_d, buff, sizeof(buff), 0);
+	#else
 	read(connect_d, buff, sizeof(buff));
+	#endif
 	strcpy(tabuleiro, buff);
 
 	// Rodada 3
@@ -96,19 +136,35 @@ int start_server(){
 	jogada_srv(tabuleiro, 1);
 
 	if(checa_vitoria_srv(tabuleiro, 1)){
+		#ifdef __WIN32__
+		send(connect_d, "VIT", sizeof("VIT"), 0);
+		#else	
 		write(connect_d, "VIT", sizeof("VIT"));
+		#endif
 		printf("Vitória do jogador 1");
 		return 0;
 	}
 
+<<<<<<< HEAD
+	// Enviou jogada	
+	#ifdef __WIN32__
+	send(connect_d, tabuleiro, sizeof(tabuleiro), 0);
+	#else	
+=======
 	// Envia jogada	
+>>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
+	#endif	
 
 	bzero(buff, sizeof(buff));
 
 	// Espera jogada do jogador 2
 	printf("Esperando o jogador 2\n");
+	#ifdef __WIN32__
+	recv(connect_d, buff, sizeof(buff), 0);
+	#else
 	read(connect_d, buff, sizeof(buff));
+	#endif
 	strcpy(tabuleiro, buff);
 
 	// Rodada 4
@@ -123,19 +179,35 @@ int start_server(){
 	jogada_srv(tabuleiro, 1);
 
 	if(checa_vitoria_srv(tabuleiro, 1)){
+		#ifdef __WIN32__
+		send(connect_d, "VIT", sizeof("VIT"), 0);
+		#else	
 		write(connect_d, "VIT", sizeof("VIT"));
+		#endif
 		printf("Vitória do jogador 1");
 		return 0;
 	}
 
+<<<<<<< HEAD
+	// Enviou jogada	
+	#ifdef __WIN32__
+	send(connect_d, tabuleiro, sizeof(tabuleiro), 0);
+	#else	
+=======
 	// Envia jogada	
+>>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
+	#endif	
 
 	bzero(buff, sizeof(buff));
 
 	// Espera jogada do jogador 2
 	printf("Esperando o jogador 2\n");
+	#ifdef __WIN32__
+	recv(connect_d, buff, sizeof(buff), 0);
+	#else
 	read(connect_d, buff, sizeof(buff));
+	#endif
 	strcpy(tabuleiro, buff);
 
 	// Rodada 5
@@ -150,19 +222,36 @@ int start_server(){
 	jogada_srv(tabuleiro, 1);
 
 	if(checa_vitoria_srv(tabuleiro, 1)){
+		#ifdef __WIN32__
+		send(connect_d, "VIT", sizeof("VIT"), 0);
+		#else	
 		write(connect_d, "VIT", sizeof("VIT"));
+		#endif
 		printf("Vitória do jogador 1");
 		return 0;
 	}
 
+<<<<<<< HEAD
+	// Enviou jogada	
+	#ifdef __WIN32__
+	send(connect_d, tabuleiro, sizeof(tabuleiro), 0);
+	#else	
+=======
 	// Envia jogada	
+>>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
+	#endif	
 
 	printf("Fim de jogo. Empate");
+	#ifdef __WIN32__
+	send(connect_d, "FIM", sizeof("FIM"), 0);
+	#else	
 	write(connect_d, "FIM", sizeof("FIM"));
+	#endif
 
 	close(connect_d);
 	close(listener_d);
+	
 	return 0;
 }
 
