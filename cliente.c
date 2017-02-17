@@ -31,18 +31,10 @@ int checa_empate_cli(char tabuleiro[]);
 
 int start_client(){
 
-<<<<<<< HEAD
-	#ifdef __WIN32__
-		WSADATA wsaData;
-		WSAStartup(MAKEWORD(1, 1), &wsaData);
-	#endif
-=======
     #ifdef __WIN32__
-        WORD versionWanted = MAKEWORD(1, 1);
         WSADATA wsaData;
-        WSAStartup(versionWanted, &wsaData);
+	WSAStartup(MAKEWORD(1, 1), &wsaData);
     #endif
->>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	
     int sockfd = socket(AF_INET,SOCK_STREAM,0);
     struct sockaddr_in servaddr;
@@ -71,88 +63,48 @@ int start_client(){
     bzero(buff,sizeof(buff));
     printf("Esperando o jogador 1\n");
     #ifdef __WIN32__
-	recv(sockfd, buff, sizeof(buff), 0);
-	#else
-	read(sockfd, buff, sizeof(buff));
-	#endif
-
-    strcpy(tabuleiro, buff);
-    print_tabuleiro_cli(tabuleiro);
-    jogada_cli(tabuleiro, 2);
-
-	#ifdef __WIN32__
-	send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
-	#else	
-	write(sockfd, tabuleiro, sizeof(tabuleiro));
-	#endif
-
-    // Rodada 2
-    bzero(buff,sizeof(buff));
-    printf("Esperando o jogador 1\n");
-	#ifdef __WIN32__
-	recv(sockfd, buff, sizeof(buff), 0);
-	#else
-	read(sockfd, buff, sizeof(buff));
-	#endif
+    recv(sockfd, buff, sizeof(buff), 0);
+    #else
+    read(sockfd, buff, sizeof(buff));
+    #endif
 
     strcpy(tabuleiro, buff);
     print_tabuleiro_cli(tabuleiro);
     jogada_cli(tabuleiro, 2);
 
     #ifdef __WIN32__
-	send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
-	#else	
-	write(sockfd, tabuleiro, sizeof(tabuleiro));
-	#endif
+    send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
+    #else	
+    write(sockfd, tabuleiro, sizeof(tabuleiro));
+    #endif
+
+    // Rodada 2
+    bzero(buff,sizeof(buff));
+    printf("Esperando o jogador 1\n");
+    #ifdef __WIN32__
+    recv(sockfd, buff, sizeof(buff), 0);
+    #else
+    read(sockfd, buff, sizeof(buff));
+    #endif
+
+    strcpy(tabuleiro, buff);
+    print_tabuleiro_cli(tabuleiro);
+    jogada_cli(tabuleiro, 2);
+
+    #ifdef __WIN32__
+    send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
+    #else	
+    write(sockfd, tabuleiro, sizeof(tabuleiro));
+    #endif
 
     // Rodada 3
     bzero(buff,sizeof(buff));
     printf("Esperando o jogador 1\n");
     #ifdef __WIN32__
-	recv(sockfd, buff, sizeof(buff), 0);
-	#else
-	read(sockfd, buff, sizeof(buff));
-	#endif
-
-    if(!strcmp(buff, "VIT")){
-    	printf("Vitória do jogador 1\n");
-    	return 0;
-    }
-
-    strcpy(tabuleiro, buff);
-    print_tabuleiro_cli(tabuleiro);
-    jogada_cli(tabuleiro, 2);
-
-    if(checa_vitoria_cli(tabuleiro, 2)){
-<<<<<<< HEAD
-   	    #ifdef __WIN32__
-		send(sockfd, "VIT", sizeof("VIT"), 0);
-		#else	
-		write(sockfd, "VIT", sizeof("VIT"));
-		#endif
-   	    printf("Vitória do jogador 2\n");
-   	    return 0;
-=======
-        write(sockfd, "VIT", sizeof("VIT"));
-   	printf("Vitória do jogador 2\n");
-   	return 0;
->>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
-    }
-
-    #ifdef __WIN32__
-	send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
-	#else	
-	write(sockfd, tabuleiro, sizeof(tabuleiro));
-	#endif
-
-    // Rodada 4
-    bzero(buff,sizeof(buff));
-    printf("Esperando o jogador 1\n");
-    #ifdef __WIN32__
-	recv(sockfd, buff, sizeof(buff), 0);
-	#else
-	read(sockfd, buff, sizeof(buff));
-	#endif
+    recv(sockfd, buff, sizeof(buff), 0);
+    #else
+    read(sockfd, buff, sizeof(buff));
+    #endif
 
     if(!strcmp(buff, "VIT")){
     	printf("Vitória do jogador 1\n");
@@ -165,27 +117,61 @@ int start_client(){
 
     if(checa_vitoria_cli(tabuleiro, 2)){
         #ifdef __WIN32__
-		send(sockfd, "VIT", sizeof("VIT"), 0);
-		#else	
-		write(sockfd, "VIT", sizeof("VIT"));
-		#endif
+	send(sockfd, "VIT", sizeof("VIT"), 0);
+	#else	
+	write(sockfd, "VIT", sizeof("VIT"));
+	#endif
+   	printf("Vitória do jogador 2\n");
+	return 0;
+    }
+
+    #ifdef __WIN32__
+    send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
+    #else	
+    write(sockfd, tabuleiro, sizeof(tabuleiro));
+    #endif
+
+    // Rodada 4
+    bzero(buff,sizeof(buff));
+    printf("Esperando o jogador 1\n");
+    #ifdef __WIN32__
+    recv(sockfd, buff, sizeof(buff), 0);
+    #else
+    read(sockfd, buff, sizeof(buff));
+    #endif
+
+    if(!strcmp(buff, "VIT")){
+    	printf("Vitória do jogador 1\n");
+    	return 0;
+    }
+
+    strcpy(tabuleiro, buff);
+    print_tabuleiro_cli(tabuleiro);
+    jogada_cli(tabuleiro, 2);
+
+    if(checa_vitoria_cli(tabuleiro, 2)){
+        #ifdef __WIN32__
+	send(sockfd, "VIT", sizeof("VIT"), 0);
+	#else	
+	write(sockfd, "VIT", sizeof("VIT"));
+	#endif
         printf("Vitoria do jogador 2\n");
         return 0;
     }
 
     #ifdef __WIN32__
-	send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
-	#else	
-	write(sockfd, tabuleiro, sizeof(tabuleiro));
-	#endif
+    send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
+    #else	
+    write(sockfd, tabuleiro, sizeof(tabuleiro));
+    #endif
 
     // FINAL
     bzero(buff, sizeof(buff));
     #ifdef __WIN32__
-	recv(sockfd, buff, sizeof(buff), 0);
-	#else
-	read(sockfd, buff, sizeof(buff));
-	#endif
+    recv(sockfd, buff, sizeof(buff), 0);
+    #else
+    read(sockfd, buff, sizeof(buff));
+    #endif
 
     strcpy(tabuleiro, buff);
     print_tabuleiro_cli(tabuleiro);
