@@ -43,12 +43,7 @@ int start_server(){
 	int listener_d = open_listener_socket();
 	bind_to_port(listener_d, 30000);
 
-<<<<<<< HEAD
-	// Criando conexão
-
 	#ifdef __unix__
-=======
->>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	struct sockaddr_storage client_addr;
 	unsigned int address_size = sizeof(client_addr);
 	#endif
@@ -59,13 +54,10 @@ int start_server(){
 	printf("Esperando o jogador 2\n");
 	listen(listener_d, 5);
 
-<<<<<<< HEAD
+	// Criando conexão
 	#ifdef __WIN32__
 	connect_d = accept(listener_d, NULL, NULL);
 	#else
-=======
-	// Criando conexão
->>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	connect_d = accept(listener_d, (struct sockaddr *)&client_addr, &address_size);
 	#endif
 	// Rodada 1
@@ -77,14 +69,10 @@ int start_server(){
 
 	bzero(buff, sizeof(buff));
 	strcpy(buff, tabuleiro);
-<<<<<<< HEAD
-	// Enviou jogada
+	// Envia jogada	
 	#ifdef __WIN32__
 	send(connect_d, buff, sizeof(buff), 0);
 	#else	
-=======
-	// Envia jogada	
->>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	write(connect_d, buff, sizeof(buff));
 	#endif
 	
@@ -106,14 +94,10 @@ int start_server(){
 	// Joga
 	jogada_srv(tabuleiro, 1);
 
-<<<<<<< HEAD
-	// Enviou jogada
+	// Envia jogada	
 	#ifdef __WIN32__
 	send(connect_d, tabuleiro, sizeof(tabuleiro), 0);
-	#else	
-=======
-	// Envia jogada	
->>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
+	#else
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
 	#endif	
 
@@ -145,14 +129,10 @@ int start_server(){
 		return 0;
 	}
 
-<<<<<<< HEAD
-	// Enviou jogada	
+	// Envia jogada		
 	#ifdef __WIN32__
 	send(connect_d, tabuleiro, sizeof(tabuleiro), 0);
-	#else	
-=======
-	// Envia jogada	
->>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
+	#else
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
 	#endif	
 
@@ -188,14 +168,10 @@ int start_server(){
 		return 0;
 	}
 
-<<<<<<< HEAD
-	// Enviou jogada	
+	// Envia jogada		
 	#ifdef __WIN32__
 	send(connect_d, tabuleiro, sizeof(tabuleiro), 0);
-	#else	
-=======
-	// Envia jogada	
->>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
+	#else
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
 	#endif	
 
@@ -231,14 +207,10 @@ int start_server(){
 		return 0;
 	}
 
-<<<<<<< HEAD
-	// Enviou jogada	
+	// Envia jogada	
 	#ifdef __WIN32__
 	send(connect_d, tabuleiro, sizeof(tabuleiro), 0);
 	#else	
-=======
-	// Envia jogada	
->>>>>>> 68a50a3bf7bc23ed518ce381fa2c3a1f21141d13
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
 	#endif	
 
