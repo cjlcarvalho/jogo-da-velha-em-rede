@@ -40,8 +40,6 @@ int start_server(){
 	int listener_d = open_listener_socket();
 	bind_to_port(listener_d, 30000);
 
-	// Criando conexão
-
 	struct sockaddr_storage client_addr;
 	unsigned int address_size = sizeof(client_addr);
 
@@ -53,18 +51,19 @@ int start_server(){
 	printf("Esperando o jogador 2\n");
 	listen(listener_d, 5);
 
+	// Criando conexão
 	connect_d = accept(listener_d, (struct sockaddr *)&client_addr, &address_size);
 
 	// Rodada 1
 	// Imprime tabuleiro
 	print_tabuleiro_srv(tabuleiro);
 	
-	// Jogou
+	// Joga
 	jogada_srv(tabuleiro, 1);
 
 	bzero(buff, sizeof(buff));
 	strcpy(buff, tabuleiro);
-	// Enviou jogada	
+	// Envia jogada	
 	write(connect_d, buff, sizeof(buff));
 
 	bzero(buff, sizeof(buff));
@@ -78,10 +77,10 @@ int start_server(){
 	// Imprime tabuleiro
 	print_tabuleiro_srv(tabuleiro);
 	
-	// Jogou
+	// Joga
 	jogada_srv(tabuleiro, 1);
 
-	// Enviou jogada	
+	// Envia jogada	
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
 
 	bzero(buff, sizeof(buff));
@@ -95,7 +94,7 @@ int start_server(){
 	// Imprime tabuleiro
 	print_tabuleiro_srv(tabuleiro);
 	
-	// Jogou
+	// Joga
 	jogada_srv(tabuleiro, 1);
 
 	if(checa_vitoria_srv(tabuleiro, 1)){
@@ -104,7 +103,7 @@ int start_server(){
 		return 0;
 	}
 
-	// Enviou jogada	
+	// Envia jogada	
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
 
 	bzero(buff, sizeof(buff));
@@ -122,7 +121,7 @@ int start_server(){
 	}
 	print_tabuleiro_srv(tabuleiro);
 	
-	// Jogou
+	// Joga
 	jogada_srv(tabuleiro, 1);
 
 	if(checa_vitoria_srv(tabuleiro, 1)){
@@ -131,7 +130,7 @@ int start_server(){
 		return 0;
 	}
 
-	// Enviou jogada	
+	// Envia jogada	
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
 
 	bzero(buff, sizeof(buff));
@@ -149,7 +148,7 @@ int start_server(){
 	}
 	print_tabuleiro_srv(tabuleiro);
 	
-	// Jogou
+	// Joga
 	jogada_srv(tabuleiro, 1);
 
 	if(checa_vitoria_srv(tabuleiro, 1)){
@@ -158,7 +157,7 @@ int start_server(){
 		return 0;
 	}
 
-	// Enviou jogada	
+	// Envia jogada	
 	write(connect_d, tabuleiro, sizeof(tabuleiro));
 
 	printf("Fim de jogo. Empate");
@@ -199,7 +198,7 @@ int jogada_srv(char tabuleiro[], int jogador){
 }
 
 int checa_jogada_srv(char tabuleiro[], char escolha[], int* n){
-	*n = 0;
+    *n = 0;
     if(escolha[0] - 65 == 0)
     {
         if(escolha[1] - 48 == 1){
