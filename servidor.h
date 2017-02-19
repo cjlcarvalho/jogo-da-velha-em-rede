@@ -2,8 +2,6 @@
 #define SERVIDOR_H
 
 int start_server();
-int open_listener_socket();
-void bind_to_port(int socket, int port);
 int jogada_srv(char tabuleiro[], int jogador);
 int checa_jogada_srv(char tabuleiro[], char escolha[], int* n);
 void print_tabuleiro_srv(char tabuleiro[]);

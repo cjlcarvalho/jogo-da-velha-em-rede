@@ -33,15 +33,15 @@ int start_client(){
 
     #ifdef __WIN32__
         WSADATA wsaData;
-	WSAStartup(MAKEWORD(1, 1), &wsaData);
+	    WSAStartup(MAKEWORD(1, 1), &wsaData);
     #endif
 	
-    int sockfd = socket(AF_INET,SOCK_STREAM,0);
+    int sockfd = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in servaddr;
+
     char buff[11];
     char tabuleiro[11];
     char resposta[4];
-    int finaliza;
     char ip[15];
 
     printf("Endereço IP do seu servidor: ");
@@ -59,119 +59,76 @@ int start_client(){
     	printf("IP inválido.\n");
     	return 0;
     }
-    // Rodada 1
-    bzero(buff,sizeof(buff));
-    printf("Esperando o jogador 1\n");
-    #ifdef __WIN32__
-    recv(sockfd, buff, sizeof(buff), 0);
-    #else
-    read(sockfd, buff, sizeof(buff));
-    #endif
+    
+    int i = 0;
 
-    strcpy(tabuleiro, buff);
-    print_tabuleiro_cli(tabuleiro);
-    jogada_cli(tabuleiro, 2);
-
-    #ifdef __WIN32__
-    send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
-    #else	
-    write(sockfd, tabuleiro, sizeof(tabuleiro));
-    #endif
-
-    // Rodada 2
-    bzero(buff,sizeof(buff));
-    printf("Esperando o jogador 1\n");
-    #ifdef __WIN32__
-    recv(sockfd, buff, sizeof(buff), 0);
-    #else
-    read(sockfd, buff, sizeof(buff));
-    #endif
-
-    strcpy(tabuleiro, buff);
-    print_tabuleiro_cli(tabuleiro);
-    jogada_cli(tabuleiro, 2);
-
-    #ifdef __WIN32__
-    send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
-    #else	
-    write(sockfd, tabuleiro, sizeof(tabuleiro));
-    #endif
-
-    // Rodada 3
-    bzero(buff,sizeof(buff));
-    printf("Esperando o jogador 1\n");
-    #ifdef __WIN32__
-    recv(sockfd, buff, sizeof(buff), 0);
-    #else
-    read(sockfd, buff, sizeof(buff));
-    #endif
-
-    if(!strcmp(buff, "VIT")){
-    	printf("Vitória do jogador 1\n");
-    	return 0;
-    }
-
-    strcpy(tabuleiro, buff);
-    print_tabuleiro_cli(tabuleiro);
-    jogada_cli(tabuleiro, 2);
-
-    if(checa_vitoria_cli(tabuleiro, 2)){
+    while(++i < 5){
+        
+        bzero(buff,sizeof(buff));
+        printf("Esperando o jogador 1\n");
+        
+        int x;
         #ifdef __WIN32__
-	send(sockfd, "VIT", sizeof("VIT"), 0);
-	#else	
-	write(sockfd, "VIT", sizeof("VIT"));
-	#endif
-   	printf("Vitória do jogador 2\n");
-	return 0;
-    }
+            x = recv(sockfd, buff, sizeof(buff), 0);
+        #else
+            x = read(sockfd, buff, sizeof(buff));
+        #endif
 
-    #ifdef __WIN32__
-    send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
-    #else	
-    write(sockfd, tabuleiro, sizeof(tabuleiro));
-    #endif
+        if(x == -1){
+            printf("Conexão perdida\n");
+            close(sockfd);
+            return 0;
+        }
 
-    // Rodada 4
-    bzero(buff,sizeof(buff));
-    printf("Esperando o jogador 1\n");
-    #ifdef __WIN32__
-    recv(sockfd, buff, sizeof(buff), 0);
-    #else
-    read(sockfd, buff, sizeof(buff));
-    #endif
+        if(!strcmp(buff, "VIT")){
+            printf("Vitória do jogador 1\n");
+            close(sockfd);
+            return 0;
+        }
 
-    if(!strcmp(buff, "VIT")){
-    	printf("Vitória do jogador 1\n");
-    	return 0;
-    }
+        strcpy(tabuleiro, buff);
+        print_tabuleiro_cli(tabuleiro);
+        jogada_cli(tabuleiro, 2);
 
-    strcpy(tabuleiro, buff);
-    print_tabuleiro_cli(tabuleiro);
-    jogada_cli(tabuleiro, 2);
+        if(checa_vitoria_cli(tabuleiro, 2)){
+            #ifdef __WIN32__
+                send(sockfd, "VIT", sizeof("VIT"), 0);
+            #else   
+                write(sockfd, "VIT", sizeof("VIT"));
+            #endif
+            printf("Vitória do jogador 2\n");
+            close(sockfd);
+            return 0;
+        }
 
-    if(checa_vitoria_cli(tabuleiro, 2)){
         #ifdef __WIN32__
-	send(sockfd, "VIT", sizeof("VIT"), 0);
-	#else	
-	write(sockfd, "VIT", sizeof("VIT"));
-	#endif
-        printf("Vitoria do jogador 2\n");
+            send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
+        #else	
+            write(sockfd, tabuleiro, sizeof(tabuleiro));
+        #endif
+    }
+
+    bzero(buff, sizeof(buff));
+
+    printf("Esperando o jogador 1\n");
+    int x;
+    #ifdef __WIN32__
+        x = recv(sockfd, buff, sizeof(buff), 0);
+    #else
+        x = read(sockfd, buff, sizeof(buff));
+    #endif
+
+    if(x == -1){
+        printf("Conexão perdida\n");
+        close(sockfd);
         return 0;
     }
 
-    #ifdef __WIN32__
-    send(sockfd, tabuleiro, sizeof(tabuleiro), 0);
-    #else	
-    write(sockfd, tabuleiro, sizeof(tabuleiro));
-    #endif
-
-    // FINAL
-    bzero(buff, sizeof(buff));
-    #ifdef __WIN32__
-    recv(sockfd, buff, sizeof(buff), 0);
-    #else
-    read(sockfd, buff, sizeof(buff));
-    #endif
+    if(!strcmp(buff, "VIT")){
+        printf("Vitória do jogador 1\n");
+        close(sockfd);
+        return 0;
+    }
 
     strcpy(tabuleiro, buff);
     print_tabuleiro_cli(tabuleiro);
