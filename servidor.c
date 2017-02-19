@@ -1,5 +1,5 @@
 #ifdef __WIN32__
-#define _WIN32_WINNT 0x0501
+    #define _WIN32_WINNT 0x0501
 #endif
 
 #include <stdio.h>
@@ -12,14 +12,14 @@
 #include <signal.h>
 
 #ifdef __WIN32__
-#include <io.h>
-#include <winsock.h>
-#include <windows.h>
-#define bzero(b, len) (memset((b), '\0', (len)), (void) 0)
+    #include <io.h>
+    #include <winsock.h>
+    #include <windows.h>
+    #define bzero(b, len) (memset((b), '\0', (len)), (void) 0)
 #else
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
 #endif
 
 int start_server();
