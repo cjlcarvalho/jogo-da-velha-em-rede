@@ -114,10 +114,10 @@ int start_server(){
 		#endif
 
 		if(x == -1){
-            printf("Conexão perdida\n");
-            close(connect_d);
-            return 0;
-        }
+                    printf("Conexão perdida\n");
+                    close(connect_d);
+                    return 0;
+                }
 
 		strcpy(tabuleiro, buff);
 	}
@@ -264,14 +264,10 @@ int checa_jogada_srv(char tabuleiro[], char escolha[], int* n){
 void print_tabuleiro_srv(char tabuleiro[]){
     int i = 0;
 
-    while(i < strlen(tabuleiro))
-    {
-        if(tabuleiro[i] == '\0') 
-            break;
-        if(i != strlen(tabuleiro) - 1)
-            printf("%c ", tabuleiro[i]);
-        if(i == 2 || i == 5 || i == strlen(tabuleiro) - 1)
-            printf("\n");
+    while(i < strlen(tabuleiro)) {
+        if(tabuleiro[i] == '\0') break;
+        if(i != strlen(tabuleiro) - 1) printf("%c ", tabuleiro[i]);
+        if(i == 2 || i == 5 || i == strlen(tabuleiro) - 1) printf("\n");
         i++;
     }
 }
