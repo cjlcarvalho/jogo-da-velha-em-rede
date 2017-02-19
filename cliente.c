@@ -33,7 +33,7 @@ int start_client(){
 
     #ifdef __WIN32__
         WSADATA wsaData;
-	    WSAStartup(MAKEWORD(1, 1), &wsaData);
+	WSAStartup(MAKEWORD(1, 1), &wsaData);
     #endif
 	
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -111,6 +111,7 @@ int start_client(){
     bzero(buff, sizeof(buff));
 
     printf("Esperando o jogador 1\n");
+    
     int x;
     #ifdef __WIN32__
         x = recv(sockfd, buff, sizeof(buff), 0);
@@ -236,14 +237,10 @@ int checa_jogada_cli(char tabuleiro[], char escolha[], int* n){
 void print_tabuleiro_cli(char tabuleiro[]){
     int i = 0;
 
-    while(i < strlen(tabuleiro))
-    {
-        if(tabuleiro[i] == '\0') 
-            break;
-        if(i != strlen(tabuleiro) - 1)
-            printf("%c ", tabuleiro[i]);
-        if(i == 2 || i == 5 || i == strlen(tabuleiro) - 1)
-            printf("\n");
+    while(i < strlen(tabuleiro)) {
+        if(tabuleiro[i] == '\0') break;
+        if(i != strlen(tabuleiro) - 1) printf("%c ", tabuleiro[i]);
+        if(i == 2 || i == 5 || i == strlen(tabuleiro) - 1) printf("\n");
         i++;
     }
 }
@@ -265,8 +262,7 @@ int checa_vitoria_cli(char tabuleiro[], int jogador){
 int checa_empate_cli(char tabuleiro[]){
     int i = 1;
     while(i < 10){
-        if(tabuleiro[i] == ' ')
-            return 0;
+        if(tabuleiro[i] == ' ') return 0;
         i++;
     }
     return 1;
