@@ -155,9 +155,8 @@ int jogada_cli(char tabuleiro[], int jogador){
                     tabuleiro[n] = letra;
                     print_tabuleiro_cli(tabuleiro);
                 }
-                else{
+                else
                     printf("Local preenchido.\n");
-                }
             }
             else
                 printf("Escolha incorreta, tente novamente.\n");
