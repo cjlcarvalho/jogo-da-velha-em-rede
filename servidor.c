@@ -369,8 +369,7 @@ int open_listener_socket(){
 void bind_to_port(int socket, int port){
 	struct sockaddr_in name;
 	name.sin_family = PF_INET;
-	//name.sin_port = (in_port_t)htons(30000);
-	name.sin_port = htons(30000);
+	name.sin_port = htons(port);
 	name.sin_addr.s_addr = INADDR_ANY;
 	int c = bind(socket, (struct sockaddr *)&name, sizeof(name));
 }
